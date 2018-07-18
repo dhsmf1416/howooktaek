@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,12 +16,20 @@ import android.widget.TextView;
 public class TaskLabelingActivity extends AppCompatActivity implements View.OnTouchListener{
 
     ImageView mImageView;
-    ViewGroup mRoot;
+//    ViewGroup mRoot;
     private int mXDelta;
     private int mYDelta;
     boolean sizeFlag;
     Rect rect;
-
+    int hori1;
+    int hori2;
+    int vert1;
+    int vert2;
+    ViewGroup mRoot;
+    View horizontal1;
+    View horizontal2;
+    View vertical1;
+    View vertical2;
     Intent intent;
     byte[] img_binary;
 
@@ -31,10 +40,10 @@ public class TaskLabelingActivity extends AppCompatActivity implements View.OnTo
         rect = new Rect();
         setContentView(R.layout.task_labeling);
 
-        mRoot = (RelativeLayout) findViewById (R.id.labelingimage_layout);
-        mImageView = (ImageView) findViewById(R.id.croprect);
-        mImageView.setOnTouchListener(this);
-        mImageView.bringToFront();
+//        mRoot = (RelativeLayout) findViewById (R.id.labelingimage_layout);
+        //mImageView = (ImageView) findViewById(R.id.croprect);
+        //mImageView.setOnTouchListener(this);
+        //mImageView.bringToFront();
 
 
         TextView tv = findViewById(R.id.labelingtitle);
@@ -46,6 +55,118 @@ public class TaskLabelingActivity extends AppCompatActivity implements View.OnTo
 
         ImageView iv = findViewById(R.id.labelingimage);
         iv.setImageBitmap(Post_LabelingTaskHttp.result_d);
+
+        mRoot = (ConstraintLayout)findViewById(R.id.labelingimage_layout);
+        horizontal1 = findViewById(R.id.horizontal1);
+        ConstraintLayout.LayoutParams xx = (ConstraintLayout.LayoutParams)horizontal1.getLayoutParams();
+        hori1 = xx.topMargin;
+        horizontal1.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                final int y = (int) event.getRawY();
+                switch(event.getAction() & MotionEvent.ACTION_MASK) {
+                    case MotionEvent.ACTION_DOWN:
+                        ConstraintLayout.LayoutParams IParams = (ConstraintLayout.LayoutParams) horizontal1.getLayoutParams();
+                        mYDelta = y - IParams.topMargin;
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) horizontal1.getLayoutParams();
+                        if(layoutParams.topMargin > hori2 - 100 && layoutParams.topMargin < y - mYDelta)
+                            return true;
+                        layoutParams.topMargin = y - mYDelta;
+                        hori1 = layoutParams.topMargin;
+                        horizontal1.setLayoutParams(layoutParams);
+                        break;
+                    default:
+                        break;
+                }
+                mRoot.invalidate();
+                return true;
+            }
+        });
+        horizontal2 = findViewById(R.id.horizontal2);
+        ConstraintLayout.LayoutParams xx2 = (ConstraintLayout.LayoutParams)horizontal2.getLayoutParams();
+        hori2 = xx2.topMargin;
+        horizontal2.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                final int y = (int) event.getRawY();
+                switch(event.getAction() & MotionEvent.ACTION_MASK) {
+                    case MotionEvent.ACTION_DOWN:
+                        ConstraintLayout.LayoutParams IParams = (ConstraintLayout.LayoutParams) horizontal2.getLayoutParams();
+                        mYDelta = y - IParams.topMargin;
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) horizontal2.getLayoutParams();
+                        hori2 = layoutParams.topMargin;
+                        if(layoutParams.topMargin < hori1 + 100 && layoutParams.topMargin > y - mYDelta)
+                            return true;
+
+                        layoutParams.topMargin = y - mYDelta;
+
+                        horizontal2.setLayoutParams(layoutParams);
+                        break;
+                    default:
+                        break;
+                }
+                mRoot.invalidate();
+                return true;
+            }
+        });
+        vertical1 = findViewById(R.id.vertical1);
+        ConstraintLayout.LayoutParams xx3 = (ConstraintLayout.LayoutParams)vertical1.getLayoutParams();
+        vert1 = xx3.leftMargin;
+        vertical1.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                final int x = (int) event.getRawX();
+                switch(event.getAction() & MotionEvent.ACTION_MASK) {
+                    case MotionEvent.ACTION_DOWN:
+                        ConstraintLayout.LayoutParams IParams = (ConstraintLayout.LayoutParams) vertical1.getLayoutParams();
+                        mXDelta = x - IParams.leftMargin;
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) vertical1.getLayoutParams();
+                        vert1 = layoutParams.leftMargin;
+                        if(layoutParams.leftMargin > vert2 - 100 && layoutParams.leftMargin < x - mXDelta)
+                            return true;
+                        layoutParams.leftMargin = x - mXDelta;
+                        vertical1.setLayoutParams(layoutParams);
+                        break;
+                    default:
+                        break;
+                }
+                mRoot.invalidate();
+                return true;
+            }
+        });
+        vertical2 = findViewById(R.id.vertical2);
+        ConstraintLayout.LayoutParams xx4 = (ConstraintLayout.LayoutParams)vertical2.getLayoutParams();
+        vert2 = xx4.leftMargin;
+        vertical2.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                final int x = (int) event.getRawX();
+                switch(event.getAction() & MotionEvent.ACTION_MASK) {
+                    case MotionEvent.ACTION_DOWN:
+                        ConstraintLayout.LayoutParams IParams = (ConstraintLayout.LayoutParams) vertical2.getLayoutParams();
+                        mXDelta = x - IParams.leftMargin;
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) vertical2.getLayoutParams();
+                        vert2 = layoutParams.leftMargin;
+                        if(layoutParams.leftMargin < vert1 + 100 && layoutParams.leftMargin > x - mXDelta)
+                            return true;
+                        layoutParams.leftMargin = x - mXDelta;
+                        vertical2.setLayoutParams(layoutParams);
+                        break;
+                    default:
+                        break;
+                }
+                mRoot.invalidate();
+                return true;
+            }
+        });
     }
 
     @Override
@@ -208,7 +329,7 @@ public class TaskLabelingActivity extends AppCompatActivity implements View.OnTo
 
                 break;
         }
-        mRoot.invalidate();
+  //      mRoot.invalidate();
         return true;
     }
 }

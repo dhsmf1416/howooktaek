@@ -124,7 +124,9 @@ public class Post_RecordingTaskHttp extends AsyncTask {
     protected void onPostExecute(Object o) {
         asyncDialog.dismiss();
         Intent intent_iv = new Intent(parent, TaskRecordingActivity.class);
-
+        if(TaskRecordingActivity.recordActivity!=null){
+            TaskRecordingActivity.recordActivity.finish();
+        }
         intent_iv.putExtra("text", result_str);
         parent.startActivity(intent_iv);
         super.onPostExecute(o);

@@ -70,10 +70,6 @@ public class PostHttp_Examining extends AsyncTask {
 //            os.write(json.getBytes("euc-kr"));
 //            os.flush();
 
-            // receive response as inputStream
-            if (httpCon.getResponseCode() != HttpURLConnection.HTTP_OK)
-                return result;
-
             try {
 
                 is = httpCon.getInputStream();
@@ -111,7 +107,8 @@ public class PostHttp_Examining extends AsyncTask {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         String line = "";
         String result = "";
-        while ((line = bufferedReader.readLine()) != null)
+        // while ((line = bufferedReader.readLine()) != null)
+            line = bufferedReader.readLine();
             result += line;
         inputStream.close();
         return result;
@@ -120,9 +117,10 @@ public class PostHttp_Examining extends AsyncTask {
 
     @Override
     protected void onPostExecute(Object o) {
-        TaskListItem Examining_tli = new TaskListItem("examining", "라벨링 검사");
+        TaskListItem Examining_tli = new TaskListItem("examining", "라벨링 검사 (10P)");
         asyncDialog.dismiss();
         if (img_binary.length() > 3){
+            System.out.println("검수 이미지 있음");
             LockScreenActivity.mTaskList.add(Examining_tli);
         }
         LockScreenActivity.adapter.notifyDataSetChanged();

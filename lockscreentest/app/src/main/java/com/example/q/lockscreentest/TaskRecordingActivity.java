@@ -1,5 +1,6 @@
 package com.example.q.lockscreentest;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
@@ -13,6 +14,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -58,6 +60,7 @@ public class TaskRecordingActivity extends AppCompatActivity {
     final int W_RECORD_AUDIO=78;
     MediaPlayer mediaPlayer = new MediaPlayer();
 
+    public static AppCompatActivity recordActivity;
 
     Intent intent;
     String result_json;
@@ -173,6 +176,35 @@ public class TaskRecordingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                System.out.println("ㅁㄴ엄나ㅣ어;비ㅏㅈ");
+                AlertDialog.Builder sendDialog = new AlertDialog.Builder(TaskRecordingActivity.this);
+                sendDialog.setTitle("녹음 전송");
+
+                sendDialog
+                        .setMessage("녹음을 전송하시겠습니까?")
+                        .setCancelable(false)
+                        .setPositiveButton("전송", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Toast.makeText(getApplicationContext(), "녹음 전송에 성공하였습니다.", Toast.LENGTH_LONG).show();
+                                Post_RecordingTaskHttp post_recordingTaskHttp = new Post_RecordingTaskHttp(TaskRecordingActivity.this);
+                                post_recordingTaskHttp.execute("https://mymy.koreacentral.cloudapp.azure.com/api/textget");
+                            }
+                        })
+                        .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        });
+
+                AlertDialog sendDialoggo = sendDialog.create();
+
+                sendDialoggo.show();
+
+
+
+
                 // String k="";
                 /*
                 FileInputStream f=null;
@@ -214,29 +246,31 @@ public class TaskRecordingActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }*/
-                Uri i= Uri.parse(path);
 
-                File sourceFile = new File(i.getPath());
-                try {
-                    FileInputStream fileInputStream = new FileInputStream(sourceFile);
-                    int bytesAvailable = 0;
+//                Uri i= Uri.parse(path);
+//
+//                File sourceFile = new File(i.getPath());
+//                try {
+//                    FileInputStream fileInputStream = new FileInputStream(sourceFile);
+//                    int bytesAvailable = 0;
+//
+//                    bytesAvailable = fileInputStream.available();
+//
+//                    int maxBufferSize=1*1024*1024;
+//                    int bufferSize = Math.min(bytesAvailable, maxBufferSize);
+//                    byte[] buffer;
+//                    buffer = new byte[bufferSize];
+//                    int bytesRead;
+//
+//                    bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+//
+//
+//                } catch (FileNotFoundException e) {
+//                    e.printStackTrace();
+//                }catch (IOException e) {
+//                    e.printStackTrace();
+//                }
 
-                    bytesAvailable = fileInputStream.available();
-
-                    int maxBufferSize=1*1024*1024;
-                    int bufferSize = Math.min(bytesAvailable, maxBufferSize);
-                    byte[] buffer;
-                    buffer = new byte[bufferSize];
-                    int bytesRead;
-
-                    bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-
-
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }catch (IOException e) {
-                    e.printStackTrace();
-                }
                 // Log.d("StrRE",k);
 
             }
@@ -253,6 +287,8 @@ public class TaskRecordingActivity extends AppCompatActivity {
             }
         });
 
+
+        recordActivity = TaskRecordingActivity.this;
     }
 
 
@@ -319,5 +355,7 @@ public class TaskRecordingActivity extends AppCompatActivity {
         //멈추는 것이다.
         Toast.makeText(this,"녹음을 중지합니다.",Toast.LENGTH_LONG).show();
     }
+
+
 
 }

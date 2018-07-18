@@ -69,9 +69,6 @@ public class PostHttp_Recording extends AsyncTask {
 
             // receive response as inputStream
 
-            if (httpCon.getResponseCode() != HttpURLConnection.HTTP_OK)
-                return result;
-
             try {
                 is = httpCon.getInputStream();
                 // convert inputstream to string

@@ -4,32 +4,31 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
 
-public class TaskExaminingActivity extends SwipeBackActivity {
+public class TaskExaminingActivity extends AppCompatActivity {
 
-    ImageView mImageView;
-    ViewGroup mRoot;
-    private int mXDelta;
-    private int mYDelta;
-    boolean sizeFlag;
-    Rect rect;
+    Button right_btn, wrong_btn;
 
     Intent intent;
     byte[] img_binary;
+    int x1, x2, x3, x4;
 
-    private SwipeBackLayout mSwipeBackLayout;
+    public static AppCompatActivity examiningActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,35 +37,57 @@ public class TaskExaminingActivity extends SwipeBackActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
                 | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
-        mSwipeBackLayout = getSwipeBackLayout();
-
-        mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT | SwipeBackLayout.EDGE_RIGHT);
-        TextView tv = (TextView) findViewById(R.id.labelingtitle);
-        tv.setText("마 제대로했는지 검사해라");
+        TextView tv = (TextView) findViewById(R.id.examiningtitle);
+        tv.setText("마 단디했는지 검사해라");
 
         intent = getIntent();
         img_binary = intent.getByteArrayExtra("img_binary");
+        x1 = Integer.parseInt(intent.getStringExtra("x1"));
+        x2 = Integer.parseInt(intent.getStringExtra("x2"));
+        x3 = Integer.parseInt(intent.getStringExtra("x3"));
+        x4 = Integer.parseInt(intent.getStringExtra("x4"));
 
-        ImageView iv = (ImageView) findViewById(R.id.labelingimage);
+        System.out.println("x1 : "+x1+"x2 : "+x2+"x3 : "+x3+"x4 : "+x4);
+
+        ImageView iv = (ImageView) findViewById(R.id.examiningimage);
         iv.setImageBitmap(Post_ExaminingTaskHttp.result_e);
 
+        ImageView rect =(ImageView)findViewById(R.id.rect);
+        ConstraintLayout.LayoutParams mLayoutParams =
+                (ConstraintLayout.LayoutParams) rect.getLayoutParams();
 
-        mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
-            @Override
-            public void onScrollStateChange(int state, float scrollPercent) {
-                // 스크롤 될 때
-            }
+        mLayoutParams.topMargin = (x1+10);
+        mLayoutParams.leftMargin = (x3+10);
+        mLayoutParams.height = x2-x1;
+        mLayoutParams.width = x4-x3;
 
+        rect.setLayoutParams(mLayoutParams);
+        rect.bringToFront();
+
+        right_btn = findViewById(R.id.right_btn);
+        wrong_btn = findViewById(R.id.wrong_btn);
+
+        right_btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onEdgeTouch(int edgeFlag) {
-                // 설정된 모서리를 터치 했을 때
-            }
-            @Override
-            public void onScrollOverThreshold() {
-                finish();
-                // 창이 닫힐 정도로 스와이프 되었을 때
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "전송 완료. 라벨링이 잘된 사진이군요!", Toast.LENGTH_LONG).show();
+                Post_ExaminingTaskHttp post_ExaminingTaskHttp = new Post_ExaminingTaskHttp(TaskExaminingActivity.this);
+                post_ExaminingTaskHttp.execute("https://mymy.koreacentral.cloudapp.azure.com/api/checkimage");
             }
         });
+
+        wrong_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "전송 완료. 다시 라벨링 해봐야 겠네요...", Toast.LENGTH_LONG).show();
+                Post_ExaminingTaskHttp post_ExaminingTaskHttp = new Post_ExaminingTaskHttp(TaskExaminingActivity.this);
+                post_ExaminingTaskHttp.execute("https://mymy.koreacentral.cloudapp.azure.com/api/checkimage");
+            }
+        });
+
+
+
+        examiningActivity = TaskExaminingActivity.this;
 
     }
 

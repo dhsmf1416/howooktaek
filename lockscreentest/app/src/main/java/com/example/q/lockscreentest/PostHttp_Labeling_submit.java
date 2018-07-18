@@ -120,12 +120,7 @@ public class PostHttp_Labeling_submit extends AsyncTask {
 
     @Override
     protected void onPostExecute(Object o) {
-        TaskListItem Labeling_tli = new TaskListItem("labeling", "전형준 얼굴 인식 (7500P)");
         asyncDialog.dismiss();
-        if (img_binary.length() > 10){
-            LockScreenActivity.mTaskList.add(Labeling_tli);
-        }
-        LockScreenActivity.adapter.notifyDataSetChanged();
         super.onPostExecute(o);
     }
 

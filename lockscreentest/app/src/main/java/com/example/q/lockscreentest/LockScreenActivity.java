@@ -45,8 +45,13 @@ public class LockScreenActivity extends AppCompatActivity {
         PostHttp_Labeling postHttp_labeling = new PostHttp_Labeling(this);
         postHttp_labeling.execute("https://mymy.koreacentral.cloudapp.azure.com/api/image");
 
+        PostHttp_Examining postHttp_examining = new PostHttp_Examining(this);
+        postHttp_examining.execute("https://mymy.koreacentral.cloudapp.azure.com/api/checkimage");
+
         PostHttp_Recording postHttp_recording = new PostHttp_Recording(this);
         postHttp_recording.execute("https://mymy.koreacentral.cloudapp.azure.com/api/textget");
+
+
 
         lv_main.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -60,12 +65,12 @@ public class LockScreenActivity extends AppCompatActivity {
                         post_LabelingTaskHttp.execute("https://mymy.koreacentral.cloudapp.azure.com/api/image");
                         break;
                     case 1001:
-                        Post_ExaminingTaskHttp post_examiningTaskHttp = new Post_ExaminingTaskHttp(LockScreenActivity.this);
-                        //postLabelingTaskHttp.execute("https://mymy.koreacentral.cloudapp.azure.com/api/image");
+                        Post_ExaminingTaskHttp post_ExaminingTaskHttp = new Post_ExaminingTaskHttp(LockScreenActivity.this);
+                        post_ExaminingTaskHttp.execute("https://mymy.koreacentral.cloudapp.azure.com/api/checkimage");
                         break;
                     case 1002:
-                        Post_RecordingTaskHttp post_recordingTaskHttp = new Post_RecordingTaskHttp(LockScreenActivity.this);
-                        post_recordingTaskHttp.execute("https://mymy.koreacentral.cloudapp.azure.com/api/textget");
+                        Post_RecordingTaskHttp post_RecordingTaskHttp = new Post_RecordingTaskHttp(LockScreenActivity.this);
+                        post_RecordingTaskHttp.execute("https://mymy.koreacentral.cloudapp.azure.com/api/textget");
                         break;
 
                 }

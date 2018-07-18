@@ -24,6 +24,8 @@ public class Post_ExaminingTaskHttp extends AsyncTask {
     public static final int READ_TIMEOUT = 15000;
     public static final int CONNECTION_TIMEOUT = 15000;
 
+    String x1, x2, x3, x4;
+
     public Post_ExaminingTaskHttp(Context context){
         this.parent = context;
     }
@@ -78,20 +80,23 @@ public class Post_ExaminingTaskHttp extends AsyncTask {
 
                 is = httpCon.getInputStream();
                 // convert inputstream to string
+
                 result_e = BitmapFactory.decodeStream(is);
+                x1 = httpCon.getHeaderField("x1");
+                x2 = httpCon.getHeaderField("x2");
+                x3 = httpCon.getHeaderField("x3");
+                x4 = httpCon.getHeaderField("x4");
+
                 if (is != null)
                     result = convertInputStreamToString(is);
                 else
                     result = "Something is wrong";
 
             } catch (IOException e) {
-
                 e.printStackTrace();
 
             } finally {
-
                 httpCon.disconnect();
-
             }
 
         } catch (IOException e) {
@@ -124,9 +129,18 @@ public class Post_ExaminingTaskHttp extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
         asyncDialog.dismiss();
-        Intent intent_iv = new Intent(parent, TaskLabelingActivity.class);
-
+        Intent intent_iv = new Intent(parent, TaskExaminingActivity.class);
         intent_iv.putExtra("img_binary", img_binary);
+        intent_iv.putExtra("x1", x1);
+        intent_iv.putExtra("x2", x2);
+        intent_iv.putExtra("x3", x3);
+        intent_iv.putExtra("x4", x4);
+
+
+
+        if(TaskExaminingActivity.examiningActivity !=null){
+            TaskExaminingActivity.examiningActivity.finish();
+        }
         parent.startActivity(intent_iv);
         super.onPostExecute(o);
     }

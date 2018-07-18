@@ -18,6 +18,7 @@ public class Post_LabelingTaskHttp extends AsyncTask {
 
     static Bitmap result_d =null;
 
+
     Context parent = null;
     byte[] img_binary = null;
     public static final String REQUEST_METHOD = "GET";
@@ -80,7 +81,7 @@ public class Post_LabelingTaskHttp extends AsyncTask {
                 is = httpCon.getInputStream();
                 // convert inputstream to string
                 result_d = BitmapFactory.decodeStream(is);
-                TaskLabelingActivity.myID = httpCon.getHeaderField("id");
+                TaskLabelingActivity.myID=httpCon.getHeaderField("id");
                 if (is != null)
                     result = convertInputStreamToString(is);
                 else
@@ -128,8 +129,11 @@ public class Post_LabelingTaskHttp extends AsyncTask {
         asyncDialog.dismiss();
         Intent intent_iv = new Intent(parent, TaskLabelingActivity.class);
 
-        intent_iv.putExtra("img_binary", img_binary);
+        if(TaskLabelingActivity.labelingActivity != null){
+            TaskLabelingActivity.labelingActivity.finish();
+        }
         parent.startActivity(intent_iv);
+        intent_iv.putExtra("img_binary", img_binary);
         super.onPostExecute(o);
     }
 

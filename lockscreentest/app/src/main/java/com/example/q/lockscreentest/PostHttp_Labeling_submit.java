@@ -16,7 +16,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class PostHttp_Labeling extends AsyncTask {
+public class PostHttp_Labeling_submit extends AsyncTask {
 
     Context parent = null;
     String img_binary = null;
@@ -25,7 +25,7 @@ public class PostHttp_Labeling extends AsyncTask {
     public static final int CONNECTION_TIMEOUT = 15000;
     ProgressDialog asyncDialog =null;
 
-    public PostHttp_Labeling(Context context){
+    public PostHttp_Labeling_submit(Context context){
         this.parent = context;
     }
 
@@ -52,6 +52,9 @@ public class PostHttp_Labeling extends AsyncTask {
         try {
             URL urlCon = new URL(objects[0].toString());
             HttpURLConnection httpCon = (HttpURLConnection) urlCon.openConnection();
+            String json = ((JSONObject) objects[1]).toString();
+            httpCon.setRequestProperty("Accept", "application/json");
+            httpCon.setRequestProperty("Content-type", "application/json");
 
             //서버 response data를 json 형식의 타입으로 요청
             //httpCon.setRequestProperty("Accept", "application/json");
@@ -63,16 +66,15 @@ public class PostHttp_Labeling extends AsyncTask {
             // InputStream으로 서버로 부터 응답을 받겠다는 옵션.
             httpCon.setDoInput(true);
 
-            //외부로 데이터를 전송하지 않음으로
-//            OutputStream os = httpCon.getOutputStream();
+            OutputStream os = httpCon.getOutputStream();
 //            os.write(json.getBytes("euc-kr"));
 //            os.flush();
+            os.write(json.getBytes("UTF-8"));
 
             // receive response as inputStream
 
             try {
                 is = httpCon.getInputStream();
-
                 // convert inputstream to string
                 if (is != null)
                     result = convertInputStreamToString(is);
@@ -109,8 +111,8 @@ public class PostHttp_Labeling extends AsyncTask {
         //while ((line = bufferedReader.readLine()) != null)
 
         line = bufferedReader.readLine();
-            System.out.println("라인 넣는중 : "+ line);
-            result += line;
+        System.out.println("라인 넣는중 : "+ line);
+        result += line;
         inputStream.close();
         return result;
 

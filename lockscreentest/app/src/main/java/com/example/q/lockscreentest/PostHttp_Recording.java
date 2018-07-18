@@ -110,7 +110,7 @@ public class PostHttp_Recording extends AsyncTask {
 
     @Override
     protected void onPostExecute(Object o) {
-        TaskListItem Recording_tli = new TaskListItem("recording", "글자 따라 읽고 녹음 하기");
+        TaskListItem Recording_tli = new TaskListItem("recording", "글자 따라 읽고 녹음 하기 (100P)");
         asyncDialog.dismiss();
         if (result_str.length() > 3){
             LockScreenActivity.mTaskList.add(Recording_tli);

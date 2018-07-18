@@ -10,15 +10,20 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class TaskLabelingActivity extends AppCompatActivity implements View.OnTouchListener{
 
     ImageView mImageView;
 //    ViewGroup mRoot;
     private int mXDelta;
+    static String myID= "";
     private int mYDelta;
     boolean sizeFlag;
     Rect rect;
@@ -33,6 +38,7 @@ public class TaskLabelingActivity extends AppCompatActivity implements View.OnTo
     View vertical2;
     Intent intent;
     byte[] img_binary;
+    Button submitButton;
 
 
     @Override
@@ -54,11 +60,29 @@ public class TaskLabelingActivity extends AppCompatActivity implements View.OnTo
 
         intent = getIntent();
         img_binary = intent.getByteArrayExtra("img_binary");
-
+        submitButton = findViewById(R.id.submit);
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PostHttp_Labeling_submit php = new PostHttp_Labeling_submit(TaskLabelingActivity.this);
+                try {
+                    JSONObject jsonParams = new JSONObject();
+                    jsonParams.put("x1", hori1);
+                    jsonParams.put("x2",hori2);
+                    jsonParams.put("x3",vert1);
+                    jsonParams.put("x4",vert2);
+                    jsonParams.put("id",myID);
+                   php.execute("https://mymy.koreacentral.cloudapp.azure.com/api/imagesubmit", jsonParams);
+                }catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         ImageView iv = findViewById(R.id.labelingimage);
         iv.setImageBitmap(Post_LabelingTaskHttp.result_d);
-
+        System.out.println(iv.getHeight());
         mRoot = (ConstraintLayout)findViewById(R.id.labelingimage_layout);
         horizontal1 = findViewById(R.id.horizontal1);
         ConstraintLayout.LayoutParams xx = (ConstraintLayout.LayoutParams)horizontal1.getLayoutParams();

@@ -80,6 +80,7 @@ public class Post_LabelingTaskHttp extends AsyncTask {
                 is = httpCon.getInputStream();
                 // convert inputstream to string
                 result_d = BitmapFactory.decodeStream(is);
+                TaskLabelingActivity.myID = httpCon.getHeaderField("id");
                 if (is != null)
                     result = convertInputStreamToString(is);
                 else

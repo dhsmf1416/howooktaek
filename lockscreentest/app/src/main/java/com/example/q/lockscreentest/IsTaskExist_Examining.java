@@ -2,9 +2,6 @@ package com.example.q.lockscreentest;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 
 import java.io.BufferedReader;
@@ -14,37 +11,31 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class Post_LabelingTaskHttp extends AsyncTask {
-
-    static Bitmap result_d =null;
+public class IsTaskExist_Examining extends AsyncTask {
 
     Context parent = null;
-    byte[] img_binary = null;
+    String img_binary = null;
     public static final String REQUEST_METHOD = "GET";
     public static final int READ_TIMEOUT = 15000;
     public static final int CONNECTION_TIMEOUT = 15000;
+    ProgressDialog asyncDialog =null;
 
-    public Post_LabelingTaskHttp(Context context){
-        this.parent = context;
-    }
 
-    ProgressDialog asyncDialog = null;
+//    @Override
+//    protected void onPreExecute() {
+//        asyncDialog = new ProgressDialog(parent);
+//        asyncDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//        asyncDialog.setMessage("최대한 빠르게 불러오고 있으니 ㄱㄷ");
+//        asyncDialog.show();
+//        super.onPreExecute();
+//    }
 
-    @Override
-    protected void onPreExecute() {
-        asyncDialog = new ProgressDialog(parent);
-        asyncDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        asyncDialog.setMessage("최대한 빠르게 불러오고 있으니 ㄱㄷ");
-        asyncDialog.show();
-        super.onPreExecute();
-    }
 
     @Override
     protected Object doInBackground(Object[] objects) {
         String url;
         InputStream is = null;
         String result = "";
-        Bitmap result2 = null;
 
         //inputstream  = 바이트 단위로 데이터를 읽는다. 외부로부터 읽어 들이는기능관련 클래스들
         //outputstream = 외부로 데이터를 전송합니다. 외부로 데이터를 전송하는 기능 관련 클래스들
@@ -52,9 +43,11 @@ public class Post_LabelingTaskHttp extends AsyncTask {
 
         try {
 
+
+
             URL urlCon = new URL(objects[0].toString());
-            System.out.println("ㅁㄴㅇㄹ : "+ urlCon);
             HttpURLConnection httpCon = (HttpURLConnection) urlCon.openConnection();
+            httpCon.setConnectTimeout(5);
 
             //서버 response data를 json 형식의 타입으로 요청
             //httpCon.setRequestProperty("Accept", "application/json");
@@ -78,8 +71,9 @@ public class Post_LabelingTaskHttp extends AsyncTask {
             try {
 
                 is = httpCon.getInputStream();
+
+
                 // convert inputstream to string
-                result_d = BitmapFactory.decodeStream(is);
                 if (is != null)
                     result = convertInputStreamToString(is);
                 else
@@ -105,9 +99,7 @@ public class Post_LabelingTaskHttp extends AsyncTask {
 
         }
 
-        img_binary = result.getBytes();
-
-
+        img_binary = result;
         return result;
 
     }
@@ -124,11 +116,14 @@ public class Post_LabelingTaskHttp extends AsyncTask {
 
     @Override
     protected void onPostExecute(Object o) {
-        asyncDialog.dismiss();
-        Intent intent_iv = new Intent(parent, TaskLabelingActivity.class);
-
-        intent_iv.putExtra("img_binary", img_binary);
-        parent.startActivity(intent_iv);
+        //asyncDialog.dismiss();
+        if (img_binary != null){
+            LockScreeniconActivity.taskCount++;
+        }else{
+            LockScreeniconActivity shouldfinish = (LockScreeniconActivity) LockScreeniconActivity.shouldfinish;
+            if(shouldfinish != null && LockScreeniconActivity.taskCount == 0)
+                shouldfinish.finish();
+        }
         super.onPostExecute(o);
     }
 

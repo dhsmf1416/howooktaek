@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -39,6 +40,8 @@ public class TaskLabelingActivity extends AppCompatActivity implements View.OnTo
         super.onCreate(savedInstanceState);
         rect = new Rect();
         setContentView(R.layout.task_labeling);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
 //        mRoot = (RelativeLayout) findViewById (R.id.labelingimage_layout);
         //mImageView = (ImageView) findViewById(R.id.croprect);

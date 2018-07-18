@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v7.app.AppCompatActivity;
 
 import org.json.JSONObject;
 
@@ -15,7 +16,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class PostHttp_labeling extends AsyncTask {
+public class PostHttp_Labeling extends AsyncTask {
 
     Context parent = null;
     String img_binary = null;
@@ -24,9 +25,7 @@ public class PostHttp_labeling extends AsyncTask {
     public static final int CONNECTION_TIMEOUT = 15000;
     ProgressDialog asyncDialog =null;
 
-
-
-    public PostHttp_labeling(Context context){
+    public PostHttp_Labeling(Context context){
         this.parent = context;
     }
 
@@ -51,9 +50,6 @@ public class PostHttp_labeling extends AsyncTask {
 
 
         try {
-
-
-
             URL urlCon = new URL(objects[0].toString());
             HttpURLConnection httpCon = (HttpURLConnection) urlCon.openConnection();
 
@@ -62,10 +58,8 @@ public class PostHttp_labeling extends AsyncTask {
 
             // 타입설정(application/json) 형식으로 전송 (Request Body 전달시 application/json로 서버에 전달.)
             //httpCon.setRequestProperty("Content-type", "application/json");
-
             // OutputStream으로 POST 데이터를 넘겨주겠다는 옵션.
             httpCon.setDoOutput(true);
-
             // InputStream으로 서버로 부터 응답을 받겠다는 옵션.
             httpCon.setDoInput(true);
 
@@ -77,9 +71,7 @@ public class PostHttp_labeling extends AsyncTask {
             // receive response as inputStream
 
             try {
-
                 is = httpCon.getInputStream();
-
 
                 // convert inputstream to string
                 if (is != null)
@@ -106,7 +98,6 @@ public class PostHttp_labeling extends AsyncTask {
             System.out.println("InputStream" + e.getLocalizedMessage());
 
         }
-
         img_binary = result;
         return result;
 
@@ -115,8 +106,10 @@ public class PostHttp_labeling extends AsyncTask {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         String line = "";
         String result = "";
-//        while ((line = bufferedReader.readLine()) != null)
+        //while ((line = bufferedReader.readLine()) != null)
+
         line = bufferedReader.readLine();
+            System.out.println("라인 넣는중 : "+ line);
             result += line;
         inputStream.close();
         return result;
@@ -125,10 +118,10 @@ public class PostHttp_labeling extends AsyncTask {
 
     @Override
     protected void onPostExecute(Object o) {
-        TaskListItem labeling_tli = new TaskListItem("labeling", "데이터 라벨링");
+        TaskListItem Labeling_tli = new TaskListItem("labeling", "데이터 라벨링");
         asyncDialog.dismiss();
-        if (img_binary != null){
-            LockScreenActivity.mTaskList.add(labeling_tli);
+        if (img_binary.length() > 10){
+            LockScreenActivity.mTaskList.add(Labeling_tli);
         }
         LockScreenActivity.adapter.notifyDataSetChanged();
         super.onPostExecute(o);

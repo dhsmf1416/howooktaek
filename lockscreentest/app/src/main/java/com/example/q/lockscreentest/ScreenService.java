@@ -45,8 +45,10 @@ public class ScreenService extends Service {
         super.onDestroy();
         if(mReceiver != null){
             unregisterReceiver(mReceiver);
-            mReceiver.reenableKeyguard();
+            //mReceiver.reenableKeyguard();
         }
     }
+
+
 
 }

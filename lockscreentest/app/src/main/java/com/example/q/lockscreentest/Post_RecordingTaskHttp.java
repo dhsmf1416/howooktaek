@@ -14,17 +14,17 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class Post_LabelingTaskHttp extends AsyncTask {
-
-    static Bitmap result_d =null;
+public class Post_RecordingTaskHttp extends AsyncTask {
 
     Context parent = null;
-    byte[] img_binary = null;
+
+    String result_str;
+
     public static final String REQUEST_METHOD = "GET";
     public static final int READ_TIMEOUT = 15000;
     public static final int CONNECTION_TIMEOUT = 15000;
 
-    public Post_LabelingTaskHttp(Context context){
+    public Post_RecordingTaskHttp(Context context){
         this.parent = context;
     }
 
@@ -53,14 +53,13 @@ public class Post_LabelingTaskHttp extends AsyncTask {
         try {
 
             URL urlCon = new URL(objects[0].toString());
-            System.out.println("ㅁㄴㅇㄹ : "+ urlCon);
             HttpURLConnection httpCon = (HttpURLConnection) urlCon.openConnection();
 
             //서버 response data를 json 형식의 타입으로 요청
-            //httpCon.setRequestProperty("Accept", "application/json");
+            httpCon.setRequestProperty("Accept", "application/json");
 
             // 타입설정(application/json) 형식으로 전송 (Request Body 전달시 application/json로 서버에 전달.)
-            //httpCon.setRequestProperty("Content-type", "application/json");
+            httpCon.setRequestProperty("Content-type", "application/json");
 
             // OutputStream으로 POST 데이터를 넘겨주겠다는 옵션.
             httpCon.setDoOutput(true);
@@ -79,7 +78,7 @@ public class Post_LabelingTaskHttp extends AsyncTask {
 
                 is = httpCon.getInputStream();
                 // convert inputstream to string
-                result_d = BitmapFactory.decodeStream(is);
+
                 if (is != null)
                     result = convertInputStreamToString(is);
                 else
@@ -105,8 +104,7 @@ public class Post_LabelingTaskHttp extends AsyncTask {
 
         }
 
-        img_binary = result.getBytes();
-
+        result_str = result;
 
         return result;
 
@@ -125,9 +123,9 @@ public class Post_LabelingTaskHttp extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
         asyncDialog.dismiss();
-        Intent intent_iv = new Intent(parent, TaskLabelingActivity.class);
+        Intent intent_iv = new Intent(parent, TaskRecordingActivity.class);
 
-        intent_iv.putExtra("img_binary", img_binary);
+        intent_iv.putExtra("text", result_str);
         parent.startActivity(intent_iv);
         super.onPostExecute(o);
     }

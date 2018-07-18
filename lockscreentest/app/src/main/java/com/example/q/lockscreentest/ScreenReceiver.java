@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 
+import java.util.ArrayList;
+
 // ScreenReceiver : 화면이 꺼졌을때 ACTION_SCREEN_OFF intent를 받을 녀석
 
 public class ScreenReceiver extends BroadcastReceiver {
@@ -36,9 +38,8 @@ public class ScreenReceiver extends BroadcastReceiver {
             }
 
             if(isPhoneIdle) {
-
                 //disableKeyguard(); //기본 잠금화면 없애기
-                Intent i = new Intent(context, LockScreenActivity.class);
+                Intent i = new Intent(context, LockScreeniconActivity.class);
                 //Activity에서 startActivity를 하는게 아니면 넣어줘야하는 flag
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);

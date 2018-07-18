@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -14,30 +16,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LockScreenActivity"
-            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
-            android:supportsPictureInPicture="true">
+        <activity android:name=".ConfigActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".ConfigActivity"
-            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
-            android:supportsPictureInPicture="true"/>
+        <activity android:name=".LockScreenActivity" />
 
-        <service android:name=".ScreenService"
-            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
-            android:supportsPictureInPicture="true"/>
+        <service android:name=".ScreenService" />
 
-        <receiver android:name=".ScreenReceiver"
-            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
-            android:supportsPictureInPicture="true"/>
+        <receiver android:name=".ScreenReceiver" />
 
         <activity android:name=".TaskLabelingActivity"/>
         <activity android:name=".TaskExaminingActivity"/>
+        <activity android:name=".TaskRecordingActivity"/>
+        <activity android:name=".test"/>
+
+        <activity android:name=".LockScreeniconActivity"
+            android:theme="@style/Theme.AppCompat.Translucent" />
 
 
     </application>

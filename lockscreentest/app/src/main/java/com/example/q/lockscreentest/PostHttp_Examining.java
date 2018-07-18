@@ -71,12 +71,12 @@ public class PostHttp_Examining extends AsyncTask {
 //            os.flush();
 
             // receive response as inputStream
+            if (httpCon.getResponseCode() != HttpURLConnection.HTTP_OK)
+                return result;
 
             try {
 
                 is = httpCon.getInputStream();
-
-
                 // convert inputstream to string
                 if (is != null)
                     result = convertInputStreamToString(is);
@@ -120,10 +120,10 @@ public class PostHttp_Examining extends AsyncTask {
 
     @Override
     protected void onPostExecute(Object o) {
-        TaskListItem labeling_tli = new TaskListItem("examining", "라벨링 검사");
+        TaskListItem Examining_tli = new TaskListItem("examining", "라벨링 검사");
         asyncDialog.dismiss();
-        if (img_binary != null){
-            LockScreenActivity.mTaskList.add(labeling_tli);
+        if (img_binary.length() > 3){
+            LockScreenActivity.mTaskList.add(Examining_tli);
         }
         LockScreenActivity.adapter.notifyDataSetChanged();
         super.onPostExecute(o);

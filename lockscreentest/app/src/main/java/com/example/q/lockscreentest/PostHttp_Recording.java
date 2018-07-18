@@ -2,9 +2,6 @@ package com.example.q.lockscreentest;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 
 import java.io.BufferedReader;
@@ -14,21 +11,20 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class Post_LabelingTaskHttp extends AsyncTask {
-
-    static Bitmap result_d =null;
+public class PostHttp_Recording extends AsyncTask {
 
     Context parent = null;
-    byte[] img_binary = null;
+    String result_str = null;
     public static final String REQUEST_METHOD = "GET";
     public static final int READ_TIMEOUT = 15000;
     public static final int CONNECTION_TIMEOUT = 15000;
+    ProgressDialog asyncDialog =null;
 
-    public Post_LabelingTaskHttp(Context context){
+
+
+    public PostHttp_Recording(Context context){
         this.parent = context;
     }
-
-    ProgressDialog asyncDialog = null;
 
     @Override
     protected void onPreExecute() {
@@ -39,21 +35,19 @@ public class Post_LabelingTaskHttp extends AsyncTask {
         super.onPreExecute();
     }
 
+
     @Override
     protected Object doInBackground(Object[] objects) {
         String url;
         InputStream is = null;
         String result = "";
-        Bitmap result2 = null;
 
         //inputstream  = 바이트 단위로 데이터를 읽는다. 외부로부터 읽어 들이는기능관련 클래스들
         //outputstream = 외부로 데이터를 전송합니다. 외부로 데이터를 전송하는 기능 관련 클래스들
 
 
         try {
-
             URL urlCon = new URL(objects[0].toString());
-            System.out.println("ㅁㄴㅇㄹ : "+ urlCon);
             HttpURLConnection httpCon = (HttpURLConnection) urlCon.openConnection();
 
             //서버 response data를 json 형식의 타입으로 요청
@@ -75,43 +69,35 @@ public class Post_LabelingTaskHttp extends AsyncTask {
 
             // receive response as inputStream
 
-            try {
+            if (httpCon.getResponseCode() != HttpURLConnection.HTTP_OK)
+                return result;
 
+            try {
                 is = httpCon.getInputStream();
                 // convert inputstream to string
-                result_d = BitmapFactory.decodeStream(is);
                 if (is != null)
                     result = convertInputStreamToString(is);
                 else
                     result = "Something is wrong";
 
             } catch (IOException e) {
-
                 e.printStackTrace();
-
             } finally {
-
                 httpCon.disconnect();
-
             }
 
         } catch (IOException e) {
-
             e.printStackTrace();
-
         } catch (Exception e) {
-
             System.out.println("InputStream" + e.getLocalizedMessage());
-
         }
 
-        img_binary = result.getBytes();
-
-
+        result_str = result;
         return result;
 
     }
     private String convertInputStreamToString(InputStream inputStream) throws IOException {
+
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         String line = "";
         String result = "";
@@ -124,11 +110,12 @@ public class Post_LabelingTaskHttp extends AsyncTask {
 
     @Override
     protected void onPostExecute(Object o) {
+        TaskListItem Recording_tli = new TaskListItem("recording", "글자 따라 읽고 녹음 하기");
         asyncDialog.dismiss();
-        Intent intent_iv = new Intent(parent, TaskLabelingActivity.class);
-
-        intent_iv.putExtra("img_binary", img_binary);
-        parent.startActivity(intent_iv);
+        if (result_str.length() > 3){
+            LockScreenActivity.mTaskList.add(Recording_tli);
+        }
+        LockScreenActivity.adapter.notifyDataSetChanged();
         super.onPostExecute(o);
     }
 

@@ -25,7 +25,7 @@ public class LockScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lockscreen_activity);
-        mTaskList.clear();
+//        mTaskList.clear();
 
         // FLAG_SHOW_WHEN_LOCKED : 안드로이드 기본 잠금보다 위에 Activity를 띄우는 것
         // FLAG_DISMISS_KEYGUARD : ?
@@ -33,49 +33,27 @@ public class LockScreenActivity extends AppCompatActivity {
                 | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
         // adapter 연결
-        lv_main = (ListView) findViewById(R.id.taskList);
-        TextView tv = findViewById(R.id.possibleTask);
-        tv.setText("진행 가능한 작업");
+//        lv_main = (ListView) findViewById(R.id.taskList);
+//        TextView tv = findViewById(R.id.possibleTask);
+//        tv.setText("진행 가능한 작업");
 
-        adapter = new ListviewAdapter(this, R.layout.task_lv, LockScreenActivity.mTaskList);
-        lv_main.setAdapter(adapter);
+//        adapter = new ListviewAdapter(this, R.layout.task_lv, LockScreenActivity.mTaskList);
+//        lv_main.setAdapter(adapter);
 
         actionBar = getSupportActionBar();
 
-        PostHttp_Labeling postHttp_labeling = new PostHttp_Labeling(this);
-        postHttp_labeling.execute("https://mymy.koreacentral.cloudapp.azure.com/api/image");
+//        PostHttp_Labeling postHttp_labeling = new PostHttp_Labeling(this);
+//        postHttp_labeling.execute("https://mymy.koreacentral.cloudapp.azure.com/api/image");
+//
+//        PostHttp_Examining postHttp_examining = new PostHttp_Examining(this);
+//        postHttp_examining.execute("https://mymy.koreacentral.cloudapp.azure.com/api/checkimage");
+//
+//        PostHttp_Recording postHttp_recording = new PostHttp_Recording(this);
+//        postHttp_recording.execute("https://mymy.koreacentral.cloudapp.azure.com/api/textget");
 
-        PostHttp_Examining postHttp_examining = new PostHttp_Examining(this);
-        postHttp_examining.execute("https://mymy.koreacentral.cloudapp.azure.com/api/checkimage");
-
-        PostHttp_Recording postHttp_recording = new PostHttp_Recording(this);
-        postHttp_recording.execute("https://mymy.koreacentral.cloudapp.azure.com/api/textget");
 
 
 
-        lv_main.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-
-                int id_int = (int) id;
-                System.out.println("아이디"+id_int);
-                switch (id_int) {
-                    case 1000:
-                        Post_LabelingTaskHttp post_LabelingTaskHttp = new Post_LabelingTaskHttp(LockScreenActivity.this);
-                        post_LabelingTaskHttp.execute("https://mymy.koreacentral.cloudapp.azure.com/api/image");
-                        break;
-                    case 1001:
-                        Post_ExaminingTaskHttp post_ExaminingTaskHttp = new Post_ExaminingTaskHttp(LockScreenActivity.this);
-                        post_ExaminingTaskHttp.execute("https://mymy.koreacentral.cloudapp.azure.com/api/checkimage");
-                        break;
-                    case 1002:
-                        Post_RecordingTaskHttp post_RecordingTaskHttp = new Post_RecordingTaskHttp(LockScreenActivity.this);
-                        post_RecordingTaskHttp.execute("https://mymy.koreacentral.cloudapp.azure.com/api/textget");
-                        break;
-
-                }
-            }
-        });
 
 
 
@@ -126,6 +104,53 @@ public class LockScreenActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        mTaskList.clear();
+
+
+        lv_main = (ListView) findViewById(R.id.taskList);
+        TextView tv = findViewById(R.id.possibleTask);
+        tv.setText("진행 가능한 작업");
+
+        adapter = new ListviewAdapter(this, R.layout.task_lv, LockScreenActivity.mTaskList);
+        lv_main.setAdapter(adapter);
+
+        PostHttp_Labeling postHttp_labeling = new PostHttp_Labeling(this);
+        postHttp_labeling.execute("https://mymy.koreacentral.cloudapp.azure.com/api/image");
+
+        PostHttp_Examining postHttp_examining = new PostHttp_Examining(this);
+        postHttp_examining.execute("https://mymy.koreacentral.cloudapp.azure.com/api/checkimage");
+
+        PostHttp_Recording postHttp_recording = new PostHttp_Recording(this);
+        postHttp_recording.execute("https://mymy.koreacentral.cloudapp.azure.com/api/textget");
+
+        lv_main.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+
+                int id_int = (int) id;
+                System.out.println("아이디"+id_int);
+                switch (id_int) {
+                    case 1000:
+                        Post_LabelingTaskHttp post_LabelingTaskHttp = new Post_LabelingTaskHttp(LockScreenActivity.this);
+                        post_LabelingTaskHttp.execute("https://mymy.koreacentral.cloudapp.azure.com/api/image");
+                        break;
+                    case 1001:
+                        Post_ExaminingTaskHttp post_ExaminingTaskHttp = new Post_ExaminingTaskHttp(LockScreenActivity.this);
+                        post_ExaminingTaskHttp.execute("https://mymy.koreacentral.cloudapp.azure.com/api/checkimage");
+                        break;
+                    case 1002:
+                        Post_RecordingTaskHttp post_RecordingTaskHttp = new Post_RecordingTaskHttp(LockScreenActivity.this);
+                        post_RecordingTaskHttp.execute("https://mymy.koreacentral.cloudapp.azure.com/api/textget");
+                        break;
+
+                }
+            }
+        });
+    }
 
     @Override
     public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode, Configuration newConfig) {

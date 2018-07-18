@@ -121,6 +121,7 @@ public class PostHttp_Labeling_submit extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
         asyncDialog.dismiss();
+        LockScreenActivity.adapter.notifyDataSetChanged();
         super.onPostExecute(o);
     }
 

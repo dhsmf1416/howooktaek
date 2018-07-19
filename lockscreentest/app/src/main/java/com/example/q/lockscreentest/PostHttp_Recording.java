@@ -30,7 +30,7 @@ public class PostHttp_Recording extends AsyncTask {
     protected void onPreExecute() {
         asyncDialog = new ProgressDialog(parent);
         asyncDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        asyncDialog.setMessage("최대한 빠르게 불러오고 있으니 ㄱㄷ");
+        asyncDialog.setMessage("서버와 소통하고 있습니다.");
         asyncDialog.show();
         super.onPreExecute();
     }
@@ -109,7 +109,7 @@ public class PostHttp_Recording extends AsyncTask {
     protected void onPostExecute(Object o) {
         TaskListItem Recording_tli = new TaskListItem("recording", "글자 따라 읽고 녹음 하기 (100P)");
         asyncDialog.dismiss();
-        if (result_str.length() > 3){
+        if (result_str.length() > 7){
             LockScreenActivity.mTaskList.add(Recording_tli);
         }
         LockScreenActivity.adapter.notifyDataSetChanged();

@@ -91,14 +91,14 @@ public class LockScreenActivity extends AppCompatActivity {
 
 
         //테스트를 위한 액티비티 변경 버튼
-        Button test_btn = (Button) findViewById(R.id.testbutton);
-        test_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(LockScreenActivity.this, LockScreeniconActivity.class);
-                startActivity(intent);
-            }
-        });
+//        Button test_btn = (Button) findViewById(R.id.testbutton);
+//        test_btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(LockScreenActivity.this, LockScreeniconActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
 
     }
@@ -109,7 +109,6 @@ public class LockScreenActivity extends AppCompatActivity {
         super.onStart();
 
         mTaskList.clear();
-
 
         lv_main = (ListView) findViewById(R.id.taskList);
         TextView tv = findViewById(R.id.possibleTask);

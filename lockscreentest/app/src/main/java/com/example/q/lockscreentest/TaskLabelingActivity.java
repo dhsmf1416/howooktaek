@@ -58,7 +58,7 @@ public class TaskLabelingActivity extends AppCompatActivity{
 
 
         TextView tv = findViewById(R.id.labelingtitle);
-        tv.setText("마 찾아라");
+        tv.setText("자동차를 라벨링 해주세요.");
 
         intent = getIntent();
         img_binary = intent.getByteArrayExtra("img_binary");

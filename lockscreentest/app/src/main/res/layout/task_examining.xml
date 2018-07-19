@@ -18,26 +18,29 @@
             android:id="@+id/examiningtitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:hint="temp"
+            android:textSize="15sp"
             android:layout_marginLeft="20dp"
-            android:layout_weight="1"
-            android:hint="temp" />
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"/>
 
         <Button
             android:id="@+id/right_btn"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_margin="3dp"
             android:layout_weight="1"
-            android:background="@color/colorAccent"
+            android:background="@drawable/mybutton"
             android:text="잘됐네요!" />
 
         <Button
             android:id="@+id/wrong_btn"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_margin="3dp"
             android:layout_weight="1"
-            android:background="@color/colorAccent"
+            android:background="@drawable/mybutton"
             android:text="못했는데요?" />
 
     </LinearLayout>

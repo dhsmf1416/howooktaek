@@ -38,7 +38,7 @@ public class TaskExaminingActivity extends AppCompatActivity {
                 | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
         TextView tv = (TextView) findViewById(R.id.examiningtitle);
-        tv.setText("마 단디했는지 검사해라");
+        tv.setText("제대로 라벨링 되었는지 확인해주세요.");
 
         intent = getIntent();
         img_binary = intent.getByteArrayExtra("img_binary");

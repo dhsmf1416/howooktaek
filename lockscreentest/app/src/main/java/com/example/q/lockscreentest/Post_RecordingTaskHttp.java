@@ -34,7 +34,7 @@ public class Post_RecordingTaskHttp extends AsyncTask {
     protected void onPreExecute() {
         asyncDialog = new ProgressDialog(parent);
         asyncDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        asyncDialog.setMessage("최대한 빠르게 불러오고 있으니 ㄱㄷ");
+        asyncDialog.setMessage("서버와 소통하고 있습니다.");
         asyncDialog.show();
         super.onPreExecute();
     }

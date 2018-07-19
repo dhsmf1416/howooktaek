@@ -116,7 +116,7 @@ public class IsTaskExist_Recording extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
         //asyncDialog.dismiss();
-        if (result_str.length() > 3){
+        if (result_str.length() > 7){
             System.out.println("들어왔지롱!");
             LockScreeniconActivity.taskCount++;
         }else{

@@ -33,7 +33,7 @@ public class PostHttp_Labeling extends AsyncTask {
     protected void onPreExecute() {
         asyncDialog = new ProgressDialog(parent);
         asyncDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        asyncDialog.setMessage("최대한 빠르게 불러오고 있으니 ㄱㄷ");
+        asyncDialog.setMessage("서버와 소통하고 있습니다.");
         asyncDialog.show();
         super.onPreExecute();
     }
@@ -118,7 +118,7 @@ public class PostHttp_Labeling extends AsyncTask {
 
     @Override
     protected void onPostExecute(Object o) {
-        TaskListItem Labeling_tli = new TaskListItem("labeling", "전형준 얼굴 인식 (7500P)");
+        TaskListItem Labeling_tli = new TaskListItem("labeling", "라벨링 (50P)");
         asyncDialog.dismiss();
         if (img_binary.length() > 10){
             LockScreenActivity.mTaskList.add(Labeling_tli);

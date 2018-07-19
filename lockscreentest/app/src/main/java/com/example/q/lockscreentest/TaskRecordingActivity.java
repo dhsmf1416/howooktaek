@@ -88,7 +88,7 @@ public class TaskRecordingActivity extends AppCompatActivity {
         mBtPlay=findViewById(R.id.stream);
 
         TextView tv = findViewById(R.id.recordingtitle);
-        tv.setText("마 읽어봐라");
+        tv.setText("텍스트를 따라 읽어주세요.");
 
         intent = getIntent();
         result_json = intent.getStringExtra("text");
